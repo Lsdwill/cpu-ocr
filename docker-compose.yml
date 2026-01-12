@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  ocr-server:
+    # 方式A: 如果要在当前目录直接构建镜像，保留 build (推荐)
+    build: ""
+    # 方式B: 如果使用已经打好的镜像，注释掉 build，打开 image
+    # image: my-ocr-service
+
+    container_name: ocr-server
+    restart: always
+    ports:
+      - "9000:9000"
+
+    environment:
+      - TZ=Asia/Shanghai
+      # 如果将来有其他配置，可以在这里添加
+      # - WORKERS=4 
+
+    # --- 日志管理配置 ---
+    # 默认情况下 docker logs 会无限增长，这里限制大小
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"  # 单个日志文件最大 50MB
+        max-file: "3"    # 最多保留 3 个日志文件 (轮转)
+
+    # --- 健康检查配置 ---
+    # 每隔 30秒 访问一次 /health 接口
+    healthcheck:
+      # 需要在 Dockerfile 中安装 curl
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/health || exit 1"]
+      interval: 30s      # 检查间隔
+      timeout: 10s       # 超时时间
+      retries: 3         # 失败重试次数，超过3次标记为 unhealthy
+      start_period: 10s  # 启动后前10秒不计入检查（给模型加载预留时间）

@@ -1,0 +1,50 @@
+# ARM64 优化版本
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# 1. 替换阿里源加速
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
+
+# 2. 安装系统依赖 - ARM64兼容
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libgomp1 \
+    poppler-utils \
+    catdoc \
+    libgl1 \
+    libglib2.0-0 \
+    libgstreamer1.0-0 \
+    libgtk-3-0 \
+    curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# 3. 安装 Python 库 - 使用ARM兼容版本
+RUN pip install --no-cache-dir \
+    fastapi==0.95.2 \
+    uvicorn==0.22.0 \
+    python-multipart==0.0.6 \
+    websockets \
+    numpy \
+    requests \
+    python-pptx \
+    openpyxl \
+    xlrd>=2.0.1 \
+    Pillow \
+    pdf2image
+
+# 4. 安装ARM兼容的OCR库
+# 对于ARM，可能需要使用CPU版本的ONNX Runtime
+RUN pip install --no-cache-dir onnxruntime && \
+    pip install --no-cache-dir rapidocr-onnxruntime
+
+# 5. 复制代码
+COPY . .
+
+EXPOSE 9000
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:9000/health || exit 1
+
+CMD ["python", "app.py"]

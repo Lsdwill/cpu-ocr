@@ -1,0 +1,11 @@
+fastapi==0.95.2
+uvicorn==0.22.0
+python-multipart==0.0.6
+rapidocr_onnxruntime==1.3.8
+numpy
+Pillow
+pdf2image
+openpyxl
+python-pptx
+requests
+xlrd>=2.0.1

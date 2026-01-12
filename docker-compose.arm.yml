@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  ocr-server:
+    # ARM版本构建配置
+    build:
+      context: .
+      dockerfile: Dockerfile.arm
+    
+    container_name: ocr-server-arm
+    restart: always
+    ports:
+      - "9000:9000"
+
+    environment:
+      - TZ=Asia/Shanghai
+      # ARM优化配置
+      - OMP_NUM_THREADS=4
+      - OPENBLAS_NUM_THREADS=4
+
+    # 日志管理配置
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+    # 健康检查配置
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s  # ARM启动可能稍慢，增加启动时间
+
+    # ARM平台资源限制
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
