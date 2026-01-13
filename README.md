@@ -166,10 +166,10 @@ docker build -f Dockerfile.arm -t ocr-service:arm64 .
    ```
 
 2. **Download from GitHub Releases**
-    - Visit the project's [Releases page](../../releases)
-    - Download the file for your architecture:
-        - AMD64: `my-ocr-service-v1.0-amd64.tar.gz`
-        - ARM64: `my-ocr-service-v1.0-arm64.tar.gz`
+   - Visit the project's [Releases page](../../releases)
+   - Download the file for your architecture:
+      - AMD64: `my-ocr-service-v1.0-amd64.tar.gz`
+      - ARM64: `my-ocr-service-v1.0-arm64.tar.gz`
 
 3. **Load and Start**
    ```bash
@@ -180,7 +180,7 @@ docker build -f Dockerfile.arm -t ocr-service:arm64 .
    docker-compose -f docker-compose-[architecture].yml up -d
    ```
 
-For detailed multi-architecture build and deployment instructions, see: [多架构构建指南.md](多架构构建指南.md)
+For detailed multi-architecture build and deployment instructions, see: [Multi-Architecture-Build-Guide.md](Multi-Architecture-Build-Guide.md)
 
 ### 🧪 Testing & Verification
 
@@ -352,10 +352,10 @@ docker build -f Dockerfile.arm -t ocr-service:arm64 .
    ```
 
 2. **从 GitHub Releases 下载对应的镜像包**
-    - 访问项目的 [Releases 页面](../../releases)
-    - 下载对应架构的文件：
-        - AMD64: `my-ocr-service-v1.0-amd64.tar.gz`
-        - ARM64: `my-ocr-service-v1.0-arm64.tar.gz`
+   - 访问项目的 [Releases 页面](../../releases)
+   - 下载对应架构的文件：
+      - AMD64: `my-ocr-service-v1.0-amd64.tar.gz`
+      - ARM64: `my-ocr-service-v1.0-arm64.tar.gz`
 
 3. **加载和启动**
    ```bash
